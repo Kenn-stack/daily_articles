@@ -1,0 +1,43 @@
+name: Daily Telegram RSS Bot
+
+on:
+  schedule:
+    # runs every day at 8:00 AM UTC
+    - cron: '5 * * * *'
+  workflow_dispatch: # optional manual trigger
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout repo
+      - uses: actions/checkout@v3
+
+      # Step 2: Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      # Step 3: Install dependencies
+      - name: Install dependencies
+        run: |
+          uv pip install --upgrade pip
+          uv pip install -r requirements.txt
+
+      # Step 4: Run the bot
+      - name: Run Telegram Bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHAT_ID: ${{ secrets.CHAT_ID }}
+        run: uv run main.py
+
+      # Step 5 (Optional): Commit updated articles.db to repo
+      - name: Commit updated database
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add articles.db
+          git diff --cached --quiet || git commit -m "Update articles database"
+          git push
