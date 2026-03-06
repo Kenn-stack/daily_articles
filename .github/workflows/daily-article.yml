@@ -31,7 +31,7 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHAT_ID: ${{ secrets.CHAT_ID }}
-        run: uv run main.py
+        run: python main.py
 
       # Step 5 (Optional): Commit updated articles.db to repo
       - name: Commit updated database
