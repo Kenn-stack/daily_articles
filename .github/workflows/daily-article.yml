@@ -6,6 +6,10 @@ on:
     - cron: '*/5 * * * *'
   workflow_dispatch: # optional manual trigger
 
+
+permissions:
+  contents: write
+
 jobs:
   run-bot:
     runs-on: ubuntu-latest
