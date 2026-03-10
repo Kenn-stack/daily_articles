@@ -105,6 +105,7 @@ def get_article():
         feed = feedparser.parse(feed_url)
         available = []
 
+        #gets the article that hasn't been sent yet from the feed and adds it to the list of available articles
         for entry in feed.entries:
             if not already_sent(entry.link):
                 available.append(entry)
